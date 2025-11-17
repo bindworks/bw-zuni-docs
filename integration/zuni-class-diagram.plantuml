@@ -43,21 +43,22 @@ class Rána {
     typ_rány
     .. <i>a dále např.</i> ..
     puvod_rany
+    rana_zhojena
 }
 
-class Médium {
+class Snímek {
     jpeg / mpeg / DICOM
 }
 
 note right
-  Data jsou typicky odesílána do PACS. 
+  Vlastní data jsou typicky odesílána do PACS. 
   Jinam se posílají pouze odkazy na serii DICOM snímků
 end note
 
 Pacient "1" *-- "*" Rána
 Návštěva "1" *-- "*" Ošetření
 Ošetření "*" -up-> "1" Rána
-Ošetření "1" --> "*" Médium
+Ošetření "1" --> "*" Snímek
 Návštěva "*" -up-> "1" Uživatel: ošetřující
 Návštěva "*" -up-> "1" Pacient: pacient
 
