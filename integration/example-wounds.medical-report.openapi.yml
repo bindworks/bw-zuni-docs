@@ -1,0 +1,101 @@
+openapi: '3.0.4'
+info:
+    title: Rozhraní pro práci s lékařskými zprávami
+    version: '0.0'
+    description: |
+        Příklad rozhraní NIS/MPI pro práci s lékařskými zprávami. Toto není předpis pro konkrétní interface k implementaci, ale spíše idea toho, jak by mohl interface vypadat. Toto rozhraní je relevantní pro scénář
+        integrace, kdy uživatel rozepíše zprávu na počítači a data pořízená ZUNI bude do zprávy doplňovat.
+    contact: 
+      email: jakub.skopal@bindworks.eu
+      name: Jakub Skopal
+      url: https://www.zuni.care
+
+paths:
+    /api/medical-reports:
+        get:
+            operationId: findOpenMedicalReports
+            tags: 
+              - Lékařské zprávy
+            description: |
+                Služba vrátí seznam otevřených lékařských zpráv pro daného pacienta.
+            parameters: 
+              - in: query
+                name: id
+                description: Vyhledávání podle ID pacienta v systému
+                required: false
+                schema: 
+                  type: string
+                example: "333f2940-0411-4af9-9274-fa3040c4d1be"
+            responses: 
+                "200":
+                    description: Seznam otevřených lékařských zpráv pro daného pacienta
+                    content:                        
+                        "application/json":
+                            schema: 
+                                type: array
+                                items:  
+                                    $ref: '#/components/schemas/NISMedicalReport'
+                            example:
+                              - id: 61ecf41d-dcf0-41cb-b6db-06db777e1f45
+                                patient_id: "333f2940-0411-4af9-9274-fa3040c4d1be"
+                                title: Ambulantní zpráva                                
+
+    /api/medical-reports/{id}:
+        patch:
+            operationId: modifyOpenMedicalReport
+            tags: 
+              - Lékařské zprávy
+            description: |
+                Služba přidá do lékařské zprávy daný text
+            parameters: 
+              - in: path
+                name: id
+                description: ID upravované lékařské zprávy
+                required: true
+                schema: 
+                  type: string
+                example: "61ecf41d-dcf0-41cb-b6db-06db777e1f45"
+            requestBody: 
+                content: 
+                    application/json:
+                        schema: 
+                            $ref: "#/components/schemas/NISMedicalReportPatchRequest"                  
+                        example:
+                          - appendText: |
+                                Umístění: pravá ruka - hřbet ruky
+                                Typ rány: Dekubit
+                                Exsudát: žádný
+
+                                Použitý materiál:
+                                  - 1ks MEPILEX BORDER FLEX LITE samolepící pěnové krytí 4X5 CM
+
+            responses: 
+                "201":
+                    description: Operace se zdařila
+
+components: 
+    schemas: 
+        NISMedicalReport:
+            type: object
+            properties:
+              id:
+                description: ID lékařské zprávy
+                type: string
+              patient_id:
+                description: ID pacienta
+                type: string
+              title:
+                description: Titulek, nadpis, uživatelská identifikace zprávy
+                type: string
+            required:
+              - id
+              - patient_id
+              - title
+
+        NISMedicalReportPatchRequest:
+            type: object
+            properties:
+              appendText:
+                type: string
+                maxLength: 16384
+
