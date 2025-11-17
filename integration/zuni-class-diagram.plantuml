@@ -1,0 +1,66 @@
+@startuml
+
+class Uživatel {
+    jmeno
+    prijmeni
+    login
+    -- <i>atd...</i> --
+}
+
+class Pacient {
+    id_pacienta
+    jmeno
+    prijmeni
+    -- <i>atd...</i> --
+}
+
+
+class Návštěva {
+    id_navstevy
+    datum_cas
+}
+
+class Ošetření {
+    rozsah_exsudace
+    typ_exsudace
+    zapach
+    okraje_rany
+    okoli_rany
+    barva_na_spodine
+    stav_rany
+    hloubka
+    sirka
+    delka
+    .. <i>a dále např.</i> ..
+    datum_pristiho_prevazu
+    pouzity_material
+    rana_zhojena
+}
+
+class Rána {
+    datum_cas_zalozeni
+    poloha
+    typ_rány
+    .. <i>a dále např.</i> ..
+    puvod_rany
+}
+
+class Médium {
+    jpeg / mpeg / DICOM
+}
+
+note right
+  Data jsou typicky odesílána do PACS. 
+  Jinam se posílají pouze odkazy na serii DICOM snímků
+end note
+
+Pacient "1" *-- "*" Rána
+Návštěva "1" *-- "*" Ošetření
+Ošetření "*" -up-> "1" Rána
+Ošetření "1" --> "*" Médium
+Návštěva "*" -up-> "1" Uživatel: ošetřující
+Návštěva "*" -up-> "1" Pacient: pacient
+
+hide empty methods    
+
+@enduml
