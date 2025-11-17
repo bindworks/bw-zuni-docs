@@ -1,0 +1,84 @@
+openapi: '3.0.4'
+info:
+    title: Rozhraní skladové evidence pro vyhledání zdravotnických prostředků
+    version: '0.0'
+    description: |
+        Příklad rozhraní skladového hospodářství. Toto není předpis pro konkrétní interface k implementaci, ale spíše idea toho, jak by mohl interface vypadat. Toto rozhraní je relevantní pokud se při ošetřování zaznamenává
+        i použitý materiál
+    contact: 
+      email: jakub.skopal@bindworks.eu
+      name: Jakub Skopal
+      url: https://www.zuni.care
+
+paths:
+    /api/material:
+        get:
+            operationId: findMaterial
+            tags: 
+              - Zdravotnické protředky
+            description: |
+                Služba vrátí seznam zdravotnických prostředků podle jednoho z filtrů. Vždy lze specifikovat pouze jeden filtr.
+            parameters: 
+              - in: query
+                name: fulltext
+                description: Vyhledávání podle fulltext
+                required: false
+                schema: 
+                  type: string
+                example: "mepil bord flex"
+              - in: query
+                name: gtin
+                description: Vyhledávání podle čárového kódu
+                required: false
+                schema: 
+                  type: string
+                example: "7323190204601"
+              - in: query
+                name: id
+                description: Vyhledávání podle ID materiálu ve skladové evidenci
+                required: false
+                schema: 
+                  type: string
+                example: "333f2940-0411-4af9-9274-fa3040c4d1be"
+            responses: 
+                "200":
+                    description: Seznam materiálu odpovídajícího zadané podmínce
+                    content:
+                        "application/json":
+                            schema: 
+                                type: array
+                                items:  
+                                    $ref: '#/components/schemas/WarehouseStock'
+                            example:
+                              - id: 333f2940-0411-4af9-9274-fa3040c4d1be
+                                nazev: "Mepilex Border Flex pěn.samolep.krytí 10x20cm 10ks"
+                                vyrobce: "MÖLNLYCKE HEALTH CARE"
+                                carove_kody: ["7323190204601", "7323190204595"]
+                              - id: 333f2940-0411-4af9-1234-fa3040c4d1be
+                                nazev: "Mepilex Border Flex pěn.sam.krytí 12.5x12.5cm 10ks"
+                                vyrobce: "MÖLNLYCKE HEALTH CARE"
+                                carove_kody: ["7333350018863", "7333350746667"]
+
+components: 
+    schemas: 
+        WarehouseStock:
+            type: object
+            properties:
+              id:
+                description: ID materiálu ve skladové evidenci
+                type: string
+              nazev:
+                description: Název materiálu
+                type: string
+              vyrobce:
+                description: Výrobce materiálu
+                type: string
+              carove_kody:
+                description: Výrobce materiálu
+                type: array
+                items:
+                  type: string
+            required:
+              - id
+              - nazev
+              - vyrobce
