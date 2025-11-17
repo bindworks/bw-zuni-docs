@@ -1,0 +1,111 @@
+openapi: '3.0.4'
+info:
+    title: Rozhraní pro vyhledání pacienta
+    version: '0.0'
+    description: |
+        Příklad rozhraní NIS/MPI pro vyhledání pacienta. Toto není předpis pro konkrétní interface k implementaci,
+        ale spíše idea toho, jak by mohl interface vypadat.
+    contact: 
+      email: jakub.skopal@bindworks.eu
+      name: Jakub Skopal
+      url: https://www.zuni.care
+
+paths:
+    /api/pacients:
+        get:
+            operationId: findPatients
+            tags: 
+              - Pacienti
+            description: |
+                Služba vrátí pacienty podle vstupního filtru. <b>Pouze jeden z filtrů smí být vyplněn.</b>
+            parameters: 
+              - in: query
+                name: fulltext
+                description: Vyhledávání podle fulltext
+                required: false
+                schema: 
+                  type: string
+                example: "Nebeský Fr"
+              - in: query
+                name: cislo_pojistence
+                description: Vyhledávání podle čísla pojištěnce
+                required: false
+                schema: 
+                  type: string
+                example: "7911226854"
+              - in: query
+                name: naramek
+                description: Vyhledávání podle čísla náramku
+                required: false
+                schema: 
+                  type: string
+                example: "25547"
+              - in: query
+                name: id
+                description: Vyhledávání podle ID pacienta v systému
+                required: false
+                schema: 
+                  type: string
+                example: "333f2940-0411-4af9-9274-fa3040c4d1be"
+            responses: 
+                "200":
+                    description: Seznam pacientů odpovídajících filtru
+                    content:                        
+                        "application/json":
+                            schema: 
+                                type: array
+                                items:  
+                                    $ref: '#/components/schemas/NISPatient'
+                            example:
+                              - id: 333f2940-0411-4af9-9274-54dba564ef46
+                                jmeno: František
+                                prijmeni: Nebeský
+                                cislo_pojistence: "7911226854"
+                                datum_narozeni: 1979-11-22
+                                pohlavi: M
+                                naramek: "25547"
+                              - id: 333f2940-0411-4af9-9274-fa3040c4d1be
+                                jmeno: Frodo
+                                prijmeni: Nebeský
+                                cislo_pojistence: "7911016854"
+                                datum_narozeni: 1979-11-01
+                                pohlavi: M
+                                naramek: "11456"
+            
+components: 
+    schemas: 
+        NISPatient:
+            type: object
+            properties:
+              id:
+                description: ID pacienta
+                type: string
+              jmeno:
+                description: Křestní jméno
+                type: string
+              prijmeni:
+                description: Příjmení
+                type: string
+              cislo_pojistence:
+                description: Číslo pojištěnce bez lomítka
+                type: string
+              datum_narozeni:
+                description: Datum narození
+                type: string
+                format: date
+              pohlavi:
+                description: Pohlaví (muž, žena, ostatní/neznámé)
+                type: string
+                enum:
+                  - M
+                  - Z
+                  - O
+              naramek:
+                description: EAN na náramku pacienta
+                type: string
+            required:
+              - id
+              - jmeno
+              - prijmeni
+              - cislo_pojistence
+
