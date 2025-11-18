@@ -21,6 +21,8 @@ class Návštěva {
 }
 
 class Ošetření {
+    id_osetreni
+    .. <i>stav rány</i> ..
     rozsah_exsudace
     typ_exsudace
     zapach
@@ -31,19 +33,31 @@ class Ošetření {
     hloubka
     sirka
     delka
+    poznamka
     .. <i>a dále např.</i> ..
     datum_pristiho_prevazu
     pouzity_material
     rana_zhojena
 }
 
+class Materiál {
+    id_materialu
+    nazev
+    mnozstvi
+    jednotky
+    sarze
+    exspirace
+}
+
 class Rána {
+    id_rany
+    nazev_rany
     datum_cas_zalozeni
     poloha
     typ_rány
     .. <i>a dále např.</i> ..
     puvod_rany
-    rana_zhojena
+    datum_zhojeni
 }
 
 class Snímek {
@@ -59,6 +73,7 @@ Pacient "1" *-- "*" Rána
 Návštěva "1" *-- "*" Ošetření
 Ošetření "*" -up-> "1" Rána
 Ošetření "1" --> "*" Snímek
+Ošetření "1" *..right..> "*" Materiál
 Návštěva "*" -up-> "1" Uživatel: ošetřující
 Návštěva "*" -up-> "1" Pacient: pacient
 
