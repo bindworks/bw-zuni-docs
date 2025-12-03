@@ -12,6 +12,10 @@ participant MED as "Úložiště médií"
 
 SES -> MOB: Údaje o pacientovi
 MOB -> SER: Vyhledání pacienta
+note right
+ZUNI podporuje i synchonizaci databáze pacientů, jejich ran a posledních ošetření do aplikace
+V takovém případě již dotaz na server nepokládá
+end note
 SER -> PAC: Vyhledání pacienta <font color="red"><size:22>❶
 SER <- PAC: Pacienti
 MOB <- SER: Pacienti
@@ -19,6 +23,10 @@ SES <- MOB: Seznam pacientů
 
 SES -> MOB: Volba pacienta
 MOB -> SER: Načtení ran a posledních ošetření pacienta
+note right
+ZUNI podporuje i synchonizaci databáze pacientů, jejich ran a posledních ošetření do aplikace
+V takovém případě již dotaz na server nepokládá
+end note
 SER -> RAN: Načtení ran a posledních ošetření pacienta <font color="red"><size:22>❷
 SER <- RAN: Rány a poslední ošetření pacienta
 SER -> SER: Aktualizace databáze
