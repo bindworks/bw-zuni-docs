@@ -24,21 +24,21 @@ SES <- MOB: Seznam ran a jejich posledních stavů
 
 SES -> MOB: Volba rány
 SES -> MOB: Prohlédnout historii
-MOB -> SER: Načtení historie ošetření rány
+MOB -[#5c9807]> SER: (HTTPS)  Načtení historie ošetření rány
 SER -> RAN: Načtení historie ošetření rány <font color="red"><size:22>❼
 SER <- RAN: Historie ošetření rány
-MOB <- SER: Historie ošetření rány
+MOB <[#5c9807]- SER: (HTTPS)  Historie ošetření rány
 SES <- MOB: Historie ošetření rány
 
-note over MOB
+note over MOB, SER
 Pokud jsou k historii připojené i obrázky,
 aplikace si je postupně načítá a ukazuje uživateli
 end note
 
-MOB -> SER: Načíst obrázek
+MOB -[#5c9807]> SER: (HTTPS)  Načíst obrázek
 SER -> MED: Načtení obrázku <font color="red"><size:22>❽
 SER <- MED: Obrázek
-MOB <- SER: Obrázek
+MOB <[#5c9807]- SER: (HTTPS)  Obrázek
 SES <- MOB: Obrázek
 
 @enduml
