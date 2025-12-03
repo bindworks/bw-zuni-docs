@@ -28,16 +28,15 @@ end note
 
 SES -> MOB: Založení nové rány
 note over MOB #a0a0a0
-…… stejné jako v případě existující rány ……
+…… dále stejné jako v případě existující rány ……
 end note
 
 SES -> MOB: Konec ošetření
-MOB -> SER: Přenos dávky na server
+MOB -[#5c9807]> SER: (HTTPS)  Přenos dávky na server
 SER -> RAN: Přidání nové rány <font color="red"><size:22>❻
 SER <- RAN: ID nové rány
-SER -> MED: Nahrání médií do úložiště <font color="red"><size:22>❹
-MED -> SER: ID uložených médií
-SER -> RAN: Přidání nového ošetření k ráně <font color="red"><size:22>❺
-SER <- RAN: ID nového ošetření
+note over PAC #a0a0a0
+…… dále stejné jako v případě existující rány ……
+end note
 
 @enduml
