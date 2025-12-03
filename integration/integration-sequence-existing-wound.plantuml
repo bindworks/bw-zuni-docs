@@ -17,6 +17,13 @@ ZUNI podporuje i synchonizaci databáze pacientů, jejich ran a posledních oše
 V takovém případě již dotaz na server nepokládá
 end note
 SER -> PAC: Vyhledání pacienta <font color="red"><size:22>❶
+note right of PAC #90D5FF
+Lze vyhledávat dle:
+* ID pacienta v NIS/MPI
+* “Fulltext” z našeptavače
+* Čísla pojištěnce
+* ID náramku pacienta (pokud jsou používány)
+end note
 SER <- PAC: Pacienti
 MOB <- SER: Pacienti
 SES <- MOB: Seznam pacientů
@@ -49,6 +56,12 @@ ZUNI podporuje i synchonizaci databáze materiálu do aplikace
 V takovém případě již dotaz na server nepokládá
 end note
 SER -> MAT: Vyhledání materiálu <font color="red"><size:22>❸
+note left of MAT #90D5FF
+Lze vyhledávat dle:
+* ID prostředku ve skladové evidenci
+* GTIN/EAN prostředku
+* “Fulltext” z našeptavače
+end note
 SER <- MAT: Materiál
 MOB <- SER: Materiál
 SES <- MOB: Materiál
@@ -61,3 +74,4 @@ SER -> RAN: Přidání nového ošetření k ráně <font color="red"><size:22>�
 SER <- RAN: ID nového ošetření
 
 @enduml
+
