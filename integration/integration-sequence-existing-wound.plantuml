@@ -1,0 +1,55 @@
+@startuml
+
+title "Ošetření existující rány"
+
+actor SES as "Ošetřující"
+participant MOB as "ZUNI Mobile"
+participant SER as "ZUNI Server"
+participant PAC as "Evidence Pacientů"
+participant RAN as "Evidence Ran"
+participant MAT as "Evidence Materiálu"
+participant MED as "Úložiště médií"
+
+SES -> MOB: Údaje o pacientovi
+MOB -> SER: Vyhledání pacienta
+SER -> PAC: Vyhledání pacienta <font color="red"><size:22>❶
+SER <- PAC: Pacienti
+MOB <- SER: Pacienti
+SES <- MOB: Seznam pacientů
+
+SES -> MOB: Volba pacienta
+MOB -> SER: Načtení ran a posledních ošetření pacienta
+SER -> RAN: Načtení ran a posledních ošetření pacienta <font color="red"><size:22>❷
+SER <- RAN: Rány a poslední ošetření pacienta
+SER -> SER: Aktualizace databáze
+MOB <- SER: Rány a poslední ošetření pacienta
+SES <- MOB: Seznam ran a jejich posledních stavů
+
+SES -> MOB: Volba rány
+SES -> MOB: Snímky
+SES -> MOB: Popis stavu rány
+
+note over MOB
+V případě použité evidence materiálu,
+může uživatel vyhledat a přidat vícero materiálu
+end note
+
+SES -> MOB: Vyhledání materiálu
+MOB -> SER: Vyhledání materiálu
+note right
+ZUNI podporuje i synchonizaci databáze materiálu do aplikace
+V takovém případě již dotaz na server nepokládá
+end note
+SER -> MAT: Vyhledání materiálu <font color="red"><size:22>❸
+SER <- MAT: Materiál
+MOB <- SER: Materiál
+SES <- MOB: Materiál
+
+SES -> MOB: Konec ošetření
+MOB -> SER: Přenos dávky na server
+SER -> MED: Nahrání médií do úložiště <font color="red"><size:22>❹
+MED -> SER: ID uložených médií
+SER -> RAN: Přidání nového ošetření k ráně <font color="red"><size:22>❺
+SER <- RAN: ID nového ošetření
+
+@enduml
