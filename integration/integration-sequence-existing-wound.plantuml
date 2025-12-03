@@ -11,11 +11,11 @@ participant MAT as "Evidence Materiálu"
 participant MED as "Úložiště médií"
 
 SES -> MOB: Údaje o pacientovi
-MOB -> SER: Vyhledání pacienta
-note right
+note over MOB, RAN
 ZUNI podporuje i synchonizaci databáze pacientů, jejich ran a posledních ošetření do aplikace
 V takovém případě již dotaz na server nepokládá
 end note
+MOB -[#5c9807]> SER: (HTTPS) Vyhledání pacienta
 SER -> PAC: Vyhledání pacienta <font color="red"><size:22>❶
 note right of PAC #90D5FF
 Lze vyhledávat dle:
@@ -25,19 +25,19 @@ Lze vyhledávat dle:
 * ID náramku pacienta (pokud jsou používány)
 end note
 SER <- PAC: Pacienti
-MOB <- SER: Pacienti
+MOB <[#5c9807]- SER: (HTTPS) Pacienti
 SES <- MOB: Seznam pacientů
 
 SES -> MOB: Volba pacienta
-MOB -> SER: Načtení ran a posledních ošetření pacienta
-note right
+note over MOB, RAN
 ZUNI podporuje i synchonizaci databáze pacientů, jejich ran a posledních ošetření do aplikace
 V takovém případě již dotaz na server nepokládá
 end note
+MOB -[#5c9807]> SER: (HTTPS) Načtení ran a posledních ošetření pacienta
 SER -> RAN: Načtení ran a posledních ošetření pacienta <font color="red"><size:22>❷
 SER <- RAN: Rány a poslední ošetření pacienta
 SER -> SER: Aktualizace databáze
-MOB <- SER: Rány a poslední ošetření pacienta
+MOB <[#5c9807]- SER: (HTTPS) Rány a poslední ošetření pacienta
 SES <- MOB: Seznam ran a jejich posledních stavů
 
 SES -> MOB: Volba rány
@@ -50,11 +50,11 @@ může uživatel vyhledat a přidat vícero materiálu
 end note
 
 SES -> MOB: Vyhledání materiálu
-MOB -> SER: Vyhledání materiálu
-note right
-ZUNI podporuje i synchonizaci databáze materiálu do aplikace
+note over MOB, RAN
+ZUNI podporuje i synchronizaci databáze materiálu do aplikace
 V takovém případě již dotaz na server nepokládá
 end note
+MOB -[#5c9807]> SER: (HTTPS) Vyhledání materiálu
 SER -> MAT: Vyhledání materiálu <font color="red"><size:22>❸
 note left of MAT #90D5FF
 Lze vyhledávat dle:
@@ -63,11 +63,13 @@ Lze vyhledávat dle:
 * “Fulltext” z našeptavače
 end note
 SER <- MAT: Materiál
-MOB <- SER: Materiál
+SER -> SER: Aktualizace databáze
+MOB <[#5c9807]- SER: (HTTPS) Materiál
 SES <- MOB: Materiál
+SES -> MOB: Zapsání materiálu
 
 SES -> MOB: Konec ošetření
-MOB -> SER: Přenos dávky na server
+MOB -[#5c9807]> SER: (HTTPS) Přenos dávky na server
 SER -> MED: Nahrání médií do úložiště <font color="red"><size:22>❹
 MED -> SER: ID uložených médií
 SER -> RAN: Přidání nového ošetření k ráně <font color="red"><size:22>❺
