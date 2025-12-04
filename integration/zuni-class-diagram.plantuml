@@ -11,7 +11,11 @@ class Pacient {
     id_pacienta
     jmeno
     prijmeni
-    -- <i>atd...</i> --
+    cislo_pojistence
+    .. <i>a dále např.</i> ..
+    RID
+    rizikove_faktory
+    luzkove_oddeleni
 }
 
 
